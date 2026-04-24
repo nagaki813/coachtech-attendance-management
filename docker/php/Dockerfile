@@ -11,3 +11,6 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     default-mysql-client \
     && docker-php-ext-install pdo_mysql mbstring zip
+
+RUN ln -snf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
+    && echo Asia/Tokyo > /etc/timezone

@@ -61,4 +61,70 @@ class AttendanceController extends Controller
 
         return back()->with('success', '退勤しました');
     }
+
+    public function startBreak()
+    {
+        $user = Auth::user();
+        $today = Carbon::today();
+
+        $attendance = Attendance::where('user_id', $user->id)
+            ->where('work_date', $today)
+            ->first();
+
+        if (!$attendance) {
+            return back()->with('error', '出勤していません');
+        }
+
+        if ($attendance->status !== 'working') {
+            return back()->with('error', '休憩開始できません');
+        }
+
+        BreakTime::create([
+            'attendance_id' => $attendance->id,
+            'break_start' => now(),
+        ]);
+
+        $attendance->update([
+            'status' => 'on_break',
+        ]);
+
+        return back()->with('success', '休憩開始');
+    }
+
+    public function endBreak()
+    {
+        $user = Auth::user();
+        $today = Carbon::today();
+
+        $attendance = Attendance::where('user_id', $user->id)
+            ->where('work_date', $today)
+            ->first();
+
+        if (!attendance) {
+            return back()->with('error', '出勤していません');
+        }
+
+        if ($attendance->status !== 'on_break') {
+            return back()->with('error', '休憩中ではありません');
+        }
+
+        $break = BreakTime::where('attendance_id', $attendance->id)
+            ->whereNull('break_end')
+            ->latest()
+            ->first();
+
+        if (!$break) {
+            return back()->with('error', '休憩データがありません');
+        }
+
+        $break->update([
+            'break_end' => now(),
+        ]);
+
+        $attendance->update([
+            'status' => 'working',
+        ]);
+
+        return back()->with('success', '休憩終了');
+    }
 }

@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Attendance;
+use App\Models\BreakTime;
 use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
     public function index()
     {
-        return view('attendances.index');
+        $attendance = Attendance::where('user_id', Auth::id())
+            ->where('work_date', today())
+            ->first();
+
+        return view('attendances.index', compact('attendance'));
     }
 
     public function clockIn()
@@ -100,7 +105,7 @@ class AttendanceController extends Controller
             ->where('work_date', $today)
             ->first();
 
-        if (!attendance) {
+        if (!$attendance) {
             return back()->with('error', '出勤していません');
         }
 

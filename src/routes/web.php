@@ -15,11 +15,16 @@ use App\Http\Controllers\AttendanceController;
 */
 
 Route::middleware(['auth', 'role:user'])->group(function () {
-    Route::get('/attendance', [AttendanceController::class, 'index']);
-    Route::post('attendance/clock-in', [AttendanceController::class, 'clockIn']);
-    Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut']);
-    Route::post('/attendance/break/start', [AttendanceController::class, 'startBreak']);
-    Route::post('/attendance/break/end', [AttendanceController::class, 'endBreak']);
+    Route::get('/attendance', [AttendanceController::class, 'index'])
+        ->name('attendances.index');
+    Route::post('attendance/clock-in', [AttendanceController::class, 'clockIn'])
+        ->name('attendances.clock_in');
+    Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])
+        ->name('attendances.clock_out');
+    Route::post('/attendance/break/start', [AttendanceController::class, 'startBreak'])
+        ->name('attendances.break_start');
+    Route::post('/attendance/break/end', [AttendanceController::class, 'endBreak'])
+        ->name('attendances.break_end');
 });
 
 Route::get('/test-user', function () {

@@ -132,4 +132,13 @@ class AttendanceController extends Controller
 
         return back()->with('success', '休憩終了');
     }
+
+    public function show(Attendance $attendance)
+    {
+        abort_unless($attendance->user_id === Auth::id(), 403);
+
+        $attendance->load('breaks');
+
+        return view('attendances.show', compact('attendance'));
+    }
 }

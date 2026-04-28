@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>勤怠詳細・修正申請</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', '勤怠詳細・修正申請')
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/show.css') }}">
+@endsection
+
+@section('content')
     <h1>勤怠詳細</h1>
 
     <p>日付：{{ $attendance->work_date }}</p>
@@ -53,6 +54,4 @@
 
         <button type="submit">修正申請</button>
     </form>
-
-</body>
-</html>
+@endsection

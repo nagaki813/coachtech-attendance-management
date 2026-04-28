@@ -8,12 +8,19 @@ use App\Models\Attendance;
 
 class AttendanceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $attendances = Attendance::with('user')
-            ->orderBy('work_date', 'desc')
-            ->paginate(10);
+        $status = $request->query('status', 'pending');
 
-        return view('admin.attendances.index', compact('attendances'));
+        $correctionRequests = AttendanceCorrectionRequest::with([
+            'user',
+            'attendance',
+        ])
+        ->where('status', $status)
+        ->orderBy('created_at', 'desc')
+        ->paginate(10)
+        ->appends(['status' => $status]);
+
+        return view('admin.attendances.index', compact('correctionRequests','status'));
     }
 }

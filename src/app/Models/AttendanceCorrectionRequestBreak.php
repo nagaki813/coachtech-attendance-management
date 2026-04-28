@@ -12,4 +12,12 @@ class AttendanceCorrectionRequestBreak extends Model
         'break_start',
         'break_end',
     ];
+
+    public function correctionRequest()
+    {
+        return $this->belongsTo(
+            AttendanceCorrectionRequest::class,
+            'correction_request_id'
+        );
+    }
 }

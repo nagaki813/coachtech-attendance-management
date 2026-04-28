@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
 use App\Http\Controllers\AttendanceCorrectionRequestController;
+use App\Http\Controllers\Admin\CorrectionRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,12 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/attendances', [AdminAttendanceController::class, 'index'])
         ->name('admin.attendances.index');
+    Route::get('/admin/correction-requests', [CorrectionRequestController::class, 'index'])
+        ->name('admin.correction-requests.index');
+    Route::get('/admin/correction-requests/{correctionRequest}', [CorrectionRequestController::class, 'show'])
+        ->name('admin.correction-requests.show');
+    Route::post('/admin/correction-requests/{correctionRequest}/approve', [CorrectionRequestController::class, 'approve'])
+        ->name('admin.correction-requests.approve');
 });
 
 Route::get('/test-user', function () {

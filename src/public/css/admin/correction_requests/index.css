@@ -1,0 +1,78 @@
+.admin-correction-container {
+    width: 720px;
+    margin: 70px auto;
+}
+
+.admin-correction-title {
+    position: relative;
+    margin-bottom: 45px;
+    padding-left: 16px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.admin-correction-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3px;
+    width: 5px;
+    height: 24px;
+    background: #000;
+}
+
+.admin-correction-tabs {
+    display: flex;
+    gap: 50px;
+    border-bottom: 1px solid #000;
+    margin-bottom: 25px;
+    padding-left: 40px;
+}
+
+.admin-correction-tab {
+    padding-bottom: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+}
+
+.admin-correction-tab.active {
+    font-weight: 700;
+}
+
+.admin-correction-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.admin-correction-table th,
+.admin-correction-table td {
+    height: 36px;
+    padding: 0 14px;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 13px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.admin-correction-table th {
+    color: #737373;
+    font-weight: 700;
+}
+
+.admin-correction-table td {
+    color: #555;
+    font-weight: 700;
+}
+
+.detail-link {
+    color: #000;
+    font-weight: 700;
+}
+
+.pagination {
+    margin-top: 24px;
+}

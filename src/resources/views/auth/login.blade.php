@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>ログイン</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title,ログイン')
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+@endsection
+
+@section('content')
     <h1>ログイン</h1>
 
     <form method="POST" action="{{ route('login') }}">
@@ -22,5 +22,4 @@
 
         <button type="submit">ログインする</button>
     </form>
-</body>
-</html>
+@endsection

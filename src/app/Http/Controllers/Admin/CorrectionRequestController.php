@@ -38,6 +38,10 @@ class CorrectionRequestController extends Controller
 
     public function approve(AttendanceCorrectionRequest $correctionRequest)
     {
+        if ($correctionRequest->status !== 'pending') {
+            return back()->with('error', 'すでに処理済みです');
+        }
+
         DB::transaction(function () use ($correctionRequest) {
             $attendance = $correctionRequest->attendance;
 
@@ -62,5 +66,15 @@ class CorrectionRequestController extends Controller
 
         return redirect()->route('admin.correction-requests.index')
             ->with('success', '承認しました');
+    }
+
+    public function reject(AttendanceCorrectionRequest $correctionRequest)
+    {
+        $correctionRequest->update([
+            'status' => 'rejected',
+        ]);
+
+        return redirect()->route('admin.correction-requests.index', ['status' => 'pending'])
+            ->with('success', '申請を却下しました');
     }
 }

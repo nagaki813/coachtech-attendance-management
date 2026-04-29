@@ -30,7 +30,11 @@
         <tbody>
             @forelse ($correctionRequests as $request)
                 <tr>
-                    <td>{{ $request->status === 'pending' ? '承認待ち' : '承認済み' }}</td>
+                    <td>
+                        <span class="status {{ $request->status }}">
+                            {{ $request->status === 'pending' ? '承認待ち' : ($request->status === 'approved' ? '承認済み' : '却下') }}
+                        </span>
+                    </td>
                     <td>{{ $request->user->name }}</td>
                     <td>{{ $request->attendance->work_date }}</td>
                     <td>{{ $request->note }}</td>

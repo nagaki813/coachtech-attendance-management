@@ -43,7 +43,12 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.correction-requests.show');
     Route::post('/admin/correction-requests/{correctionRequest}/approve', [CorrectionRequestController::class, 'approve'])
         ->name('admin.correction-requests.approve');
+    Route::post('/admin/correction-requests/{correctionRequest}/reject', [CorrectionRequestController::class, 'reject'])
+        ->name('admin.correction-requests.reject');
 });
+
+Route::get('/admin/login', [Admin\AuthController::class, 'showLoginForm']);
+Route::post('/admin/login', [Admin\AuthController::class, 'login']);
 
 Route::get('/test-user', function () {
     return '

@@ -10,17 +10,11 @@ class AttendanceController extends Controller
 {
     public function index(Request $request)
     {
-        $status = $request->query('status', 'pending');
+        $attendances = Attendance::with('user')
+        ->orderBy('work_date', 'desc')
+        ->orderBy('clock_in', 'asc')
+        ->paginate(10);
 
-        $correctionRequests = AttendanceCorrectionRequest::with([
-            'user',
-            'attendance',
-        ])
-        ->where('status', $status)
-        ->orderBy('created_at', 'desc')
-        ->paginate(10)
-        ->appends(['status' => $status]);
-
-        return view('admin.attendances.index', compact('correctionRequests','status'));
+        return view('admin.attendances.index', compact('attendances'));
     }
 }

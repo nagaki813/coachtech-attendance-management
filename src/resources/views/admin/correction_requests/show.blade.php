@@ -27,9 +27,14 @@
         </div>
 
         @if ($correctionRequest->status === 'pending')
-            <form method="POST" action="{{ route('admin.correction-requests.approve', $correctionRequest->id) }}">
+            <form action="POST" action="{{ route('admin.correction-requests.approve', $correctionRequest->id) }}">
                 @csrf
                 <button type="submit">承認</button>
+            </form>
+
+            <form method="POST" action="{{ route('admin.correction-requests.reject', $correctionRequest->id) }}">
+                @csrf
+                <button type="submit">却下</button>
             </form>
         @endif
     </div>

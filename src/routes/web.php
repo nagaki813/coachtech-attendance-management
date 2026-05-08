@@ -50,6 +50,8 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.correction-requests.index');
     Route::get('/admin/correction-requests/{correctionRequest}', [CorrectionRequestController::class, 'show'])
         ->name('admin.correction-requests.show');
+    Route::get('/attendance/staff/{user}', [StaffController::class, 'show'])
+        ->name('admin.staff.attendances');
     Route::post('/admin/correction-requests/{correctionRequest}/approve', [CorrectionRequestController::class, 'approve'])
         ->name('admin.correction-requests.approve');
     Route::post('/admin/correction-requests/{correctionRequest}/reject', [CorrectionRequestController::class, 'reject'])

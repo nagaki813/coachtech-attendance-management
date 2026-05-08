@@ -6,15 +6,19 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\User;
 use Laravel\Fortify\Contracts\LoginResponse;
-use Illuminate\Http\RedirectResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
+use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
+use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\RegisterResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
-use Laravel\Fortify\Fortify;
+
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -45,6 +49,18 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.register');
         });
 
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::where('email', $request->email)->first();
+
+            if ($user &&
+                Hash::check($request->password, $user->password) &&
+                $user->role === 'user') {
+                    return $user;
+            }
+
+            return null;
+        });
+
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
@@ -55,15 +71,45 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
+        $this->app->singleton(RegisterResponse::class, function () {
+            return new class implements RegisterResponse {
+                public function toResponse($request)
+                {
+                    session(['role' => auth()->user()->role]);
+
+                    if (auth()->user()->role === 'admin') {
+                        return redirect()->route('admin.attendances.index');
+                    }
+
+                    return redirect()->route('attendances.index');
+                }
+            };
+        });
+
         $this->app->singleton(LoginResponse::class, function () {
             return new class implements LoginResponse {
                 public function toResponse($request)
                 {
+                    session(['role' => auth()->user()->role]);
+
                     if (auth()->user()->role === 'admin') {
-                        return redirect('/admin');
+                        return redirect()->route('admin.attendances.index');
                     }
 
-                    return redirect('/attendance');
+                    return redirect()->route('attendances.index');
+                }
+            };
+        });
+
+        $this->app->singleton(LogoutResponse::class, function () {
+            return new class implements LogoutResponse {
+                public function toResponse($request)
+                {
+                    $role = session('role');
+
+                    return $role === 'admin'
+                        ? redirect('/admin/login')
+                        : redirect('/login');
                 }
             };
         });

@@ -141,4 +141,28 @@ class AttendanceController extends Controller
 
         return view('attendances.show', compact('attendance'));
     }
+
+    public function list(Request $request)
+    {
+        $currentMonth = $request->query('month')
+            ? Carbon::parse($request->query('month'))
+            : Carbon::now();
+
+        $previousMonth = $currentMonth->copy()->subMonth()->format('Y-m');
+        $nextMonth = $currentMonth->copy()->addMonth()->format('Y-m');
+
+        $attendances = Attendance::with('breaks')
+            ->where('user_id', auth()->id())
+            ->whereYear('work_date', $currentMonth->year)
+            ->whereMonth('work_date', $currentMonth->month)
+            ->orderBy('work_date', 'asc')
+            ->get();
+
+        return view('attendances.list', compact(
+            'attendances',
+            'currentMonth',
+            'previousMonth',
+            'nextMonth'
+        ));
+    }
 }

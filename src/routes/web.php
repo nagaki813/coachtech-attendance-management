@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
 use App\Http\Controllers\AttendanceCorrectionRequestController;
 use App\Http\Controllers\Admin\CorrectionRequestController;
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +23,10 @@ use App\Http\Controllers\Admin\CorrectionRequestController;
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'index'])
         ->name('attendances.index');
+    Route::get('/attendance/list', [AttendanceController::class, 'list'])
+        ->name('attendances.list');
+    Route::get('/attendance/requests', [AttendanceCorrectionRequestController::class, 'index'])
+        ->name('attendance_correction_requests.index');
     Route::post('attendance/clock-in', [AttendanceController::class, 'clockIn'])
         ->name('attendances.clock_in');
     Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])
@@ -37,6 +44,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/attendances', [AdminAttendanceController::class, 'index'])
         ->name('admin.attendances.index');
+    Route::get('/staff/list', [StaffController::class, 'index'])
+        ->name('admin.staff.list');
     Route::get('/admin/correction-requests', [CorrectionRequestController::class, 'index'])
         ->name('admin.correction-requests.index');
     Route::get('/admin/correction-requests/{correctionRequest}', [CorrectionRequestController::class, 'show'])
@@ -47,8 +56,21 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.correction-requests.reject');
 });
 
-Route::get('/admin/login', [Admin\AuthController::class, 'showLoginForm']);
-Route::post('/admin/login', [Admin\AuthController::class, 'login']);
+Route::get('/admin/login', [AuthController::class, 'showLoginForm'])
+    ->name('admin.login');
+Route::post('/admin/login', [AuthController::class, 'login']);
+Route::post('/logout', function () {
+    $redirectTo = auth()->user()?->role === 'admin'
+        ? '/admin/login'
+        : '/login';
+
+    Auth::logout();
+
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+
+    return redirect($redirectTo);
+})->name('logout');
 
 Route::get('/test-user', function () {
     return '

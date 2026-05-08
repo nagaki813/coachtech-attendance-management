@@ -9,6 +9,24 @@ use App\Models\AttendanceCorrectionRequestBreak;
 
 class AttendanceCorrectionRequestController extends Controller
 {
+    public function index(Request $request)
+    {
+        $status = $request->query('status', 'pending');
+
+        $correctionRequests = AttendanceCorrectionRequest::with([
+            'attendance'
+            ])
+            ->where('user_id', auth()->id())
+            ->where('status', $status)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('attendance_correction_requests.index', compact(
+            'correctionRequests',
+            'status'
+            ));
+    }
+
     public function store(Request $request, $attendanceId)
     {
         $correction = AttendanceCorrectionRequest::create([

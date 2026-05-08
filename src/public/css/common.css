@@ -29,17 +29,14 @@ button {
     max-width: 1230px;
     height: 100%;
     margin: 0 auto;
-    padding: 0 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 .header__logo {
-    color: #fff;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -1px;
+    height: 30px;
+    object-fit: contain;
 }
 
 .header__nav {

@@ -9,20 +9,20 @@
 <body>
     <header class="header">
         <div class="header__inner">
-            <a href="/" class="header__logo">
-                COACHTECH
+            <a href="{{ auth()->check() ? (auth()->user()->role === 'admin' ? route('admin.attendances.index') : route('attendances.index')) : route('login') }}" class="header__logo">
+                <img src="{{ asset('images/logo.png') }}" alt="COACHTECH" class="header-logo">
             </a>
 
             @auth
                 <nav class="header__nav">
                     @if (auth()->user()->role === 'admin')
                         <a href="{{ route('admin.attendances.index') }}">勤怠一覧</a>
-                        <a href="#">スタッフ一覧</a>
+                        <a href="{{ route('admin.staff.list') }}">スタッフ一覧</a>
                         <a href="{{ route('admin.correction-requests.index') }}">申請一覧</a>
                     @else
                         <a href="{{ route('attendances.index') }}">勤怠</a>
-                        <a href="#">勤怠一覧</a>
-                        <a href="#">申請</a>
+                        <a href="{{ route('attendances.list') }}">勤怠一覧</a>
+                        <a href="{{ route('attendance_correction_requests.index') }}">申請</a>
                     @endif
 
                     <form action="{{ route('logout') }}" method="POST" class="header__logout">

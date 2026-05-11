@@ -1,0 +1,103 @@
+body {
+    background: #f1f1f1;
+}
+
+.attendance-detail-container {
+    width: 900px;
+    margin: 60px auto 100px;
+}
+
+.attendance-detail-title {
+    position: relative;
+    margin-bottom: 50px;
+    padding-left: 18px;
+    font-size: 30px;
+    font-weight: 700;
+    color: #000;
+}
+
+.attendance-detail-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 5px;
+    height: 36px;
+    background: #000;
+}
+
+.attendance-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.attendance-detail-table th,
+.attendance-detail-table td {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 32px 40px;
+}
+
+.attendance-detail-table th {
+    width: 220px;
+    background: #fafafa;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+    color: #000;
+}
+
+.attendance-detail-table td {
+    font-size: 16px;
+    color: #000;
+}
+
+.time-range {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.time-range input[type="time"] {
+    width: 110px;
+    height: 40px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 0 12px;
+    font-size: 16px;
+    background: #fff;
+}
+
+textarea {
+    width: 400px;
+    height: 90px;
+    padding: 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    resize: none;
+    font-size: 14px;
+}
+
+.attendance-detail-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
+}
+
+.edit-button {
+    width: 130px;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    background: #000;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    opacity: 0.85;
+}

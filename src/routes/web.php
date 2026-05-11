@@ -52,6 +52,14 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.correction-requests.show');
     Route::get('/attendance/staff/{user}', [StaffController::class, 'show'])
         ->name('admin.staff.attendances');
+    Route::get('/attendance/staff/{user}/csv', [StaffController::class, 'exportCsv'])
+        ->name('admin.staff.attendances.csv');
+    Route::get('attendances/{attendance}', [AdminAttendanceController::class, 'show'])
+        ->name('admin.attendances.show');
+    Route::get('/attendances/{attendance}/edit', [AdminAttendanceController::class, 'edit'])
+        ->name('admin.attendances.edit');
+    Route::put('/attendances/{attendance}', [AdminAttendanceController::class, 'update'])
+        ->name('admin.attendances.update');
     Route::post('/admin/correction-requests/{correctionRequest}/approve', [CorrectionRequestController::class, 'approve'])
         ->name('admin.correction-requests.approve');
     Route::post('/admin/correction-requests/{correctionRequest}/reject', [CorrectionRequestController::class, 'reject'])
@@ -73,27 +81,3 @@ Route::post('/logout', function () {
 
     return redirect($redirectTo);
 })->name('logout');
-
-Route::get('/test-user', function () {
-    return '
-        <h1>user dashboard</h1>
-        <form method="POST" action="/logout">
-            <input type="hidden" name="_token" value="'.csrf_token().'">
-            <button type="submit">ログアウト</button>
-        </form>
-    ';
-})->middleware(['auth', 'role:user']);
-
-Route::get('/test-admin', function () {
-    return '
-        <h1>admin dashboard</h1>
-        <form method="POST" action="/logout">
-            <input type="hidden" name="_token" value="'.csrf_token().'">
-            <button type="submit">ログアウト</button>
-        </form>
-    ';
-})->middleware(['auth', 'role:admin']);
-
-Route::get('/admin', function () {
-    return 'admin dashboard';
-})->middleware(['auth', 'role:admin'])->name('admin.index');

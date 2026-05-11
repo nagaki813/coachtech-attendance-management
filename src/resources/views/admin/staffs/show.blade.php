@@ -64,7 +64,7 @@
                         <td>{{ sprintf('%d:%02d', floor($breakMinutes / 60), $breakMinutes % 60) }}</td>
                         <td>{{ sprintf('%d:%02d', floor($workMinutes / 60), $workMinutes % 60) }}</td>
                         <td>
-                            <a href="#" class="detail-link">
+                            <a href="{{ route('admin.attendances.show', $attendance->id) }}" class="detail-link">
                                 詳細
                             </a>
                         </td>

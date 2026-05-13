@@ -46,7 +46,7 @@ class CorrectionRequestController extends Controller
             $attendance = $correctionRequest->attendance;
 
             $attendance->update([
-                'clock__in' => $correctionRequest->requested_clock_in,
+                'clock_in' => $correctionRequest->requested_clock_in,
                 'clock_out' => $correctionRequest->requested_clock_out,
             ]);
 

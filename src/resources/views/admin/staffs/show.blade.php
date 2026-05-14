@@ -76,5 +76,17 @@
                 @endforelse
             </tbody>
         </table>
+
+        <div class="csv-button-area">
+            <form method="GET" action="{{ route('admin.staff.attendances.csv', $user->id) }}">
+                <input type="hidden"
+                       name="month"
+                       value="{{ $currentMonth->format('Y-m') }}">
+
+                <button type="submit" class="csv-button">
+                    CSV出力
+                </button>
+            </form>
+        </div>
     </div>
 @endsection

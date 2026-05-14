@@ -14,11 +14,17 @@
             <label>メールアドレス</label>
             <input type="email" name="email" value="{{ old('email') }}">
         </div>
+        @error("email")
+            <p class="error-message">{{ $message }}</p>
+        @enderror
 
         <div>
             <label>パスワード</label>
             <input type="password" name="password">
         </div>
+        @error("password")
+            <p class="error-message">{{ $message }}</p>
+        @enderror
 
         <button type="submit">ログインする</button>
     </form>

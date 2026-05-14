@@ -16,16 +16,25 @@
             <label>名前</label>
             <input type="text" name="name" value="{{ old('name') }}">
         </div>
+        @error("name")
+            <p class="error-message">{{ $message }}</p>
+        @enderror
 
         <div>
             <label>メールアドレス</label>
             <input type="email" name="email" value="{{ old('email') }}">
         </div>
+        @error("email")
+            <p class="error-message">{{ $message }}</p>
+        @enderror
 
         <div>
             <label>パスワード</label>
             <input type="password" name="password">
         </div>
+        @error("password")
+            <p class="error-message">{{ $message }}</p>
+        @enderror
 
         <div>
             <label>パスワード確認</label>

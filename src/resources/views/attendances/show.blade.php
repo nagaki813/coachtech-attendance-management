@@ -28,14 +28,6 @@
 
     <h2>修正申請</h2>
 
-    @if ($errors->any())
-        <div class="error-summary">
-            @foreach ($errors->all() as $error)
-                <p class="error-message">{{ $error }}</p>
-            @endforeach
-        </div>
-    @endif
-
     <form method="POST" action="{{ route('attendance_correction_requests.store', $attendance->id) }}">
         @csrf
 

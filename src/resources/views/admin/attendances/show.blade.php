@@ -29,12 +29,22 @@
                     <th>出勤・退勤</th>
                     <td>
                         <div class="time-range">
-                            <input type="time" name="clock_in" value="{{ $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '-' }}">
+                            <input type="time"
+                                   name="clock_in"
+                                   value="{{ old('clock_in', $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '') }}">
 
                             <span>～</span>
 
-                            <input type="time" name="clock_out" value="{{ $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '-' }}">
+                            <input type="time"
+                                   name="clock_out"
+                                   value="{{ old('clock_out', $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '') }}">
                         </div>
+                        @error('clock_in')
+                            <p class="error-message">{{ $message }}</p>
+                        @enderror
+                        @error('clock_out')
+                            <p class="error-message">{{ $message }}</p>
+                        @enderror
                     </td>
                 </tr>
 
@@ -53,14 +63,20 @@
                             <div class="time-range">
                                 <input type="time"
                                        name="breaks[{{ $i }}][break_start]"
-                                       value="{{ $break && $break->break_start ? \carbon\Carbon::parse($break->break_start)->format('H:i') : '' }}">
+                                       value="{{ old("breaks.$i.break_start", $break && $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '') }}">
 
                                 <span>～</span>
 
                                 <input type="time"
                                        name="breaks[{{ $i }}][break_end]"
-                                       value="{{ $break && $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '' }}">
+                                       value="{{ old("breaks.$i.break_end", $break && $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '') }}">
                             </div>
+                            @error("breaks.$i.break_start")
+                                <p class="error-message">{{ $message }}</p>
+                            @enderror
+                            @error("breaks.$i.break_end")
+                                <p class="error-message">{{ $message }}</p>
+                            @enderror
                         </td>
                     </tr>
                 @endfor
@@ -69,6 +85,9 @@
                     <th>備考</th>
                     <td>
                         <textarea name="note" class="note-textarea">{{ $attendance->note }}</textarea>
+                        @error('note')
+                            <p class="error-message">{{ $message }}</p>
+                        @enderror
                     </td>
                 </tr>
             </table>

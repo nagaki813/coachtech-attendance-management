@@ -70,6 +70,10 @@ class CorrectionRequestController extends Controller
 
     public function reject(AttendanceCorrectionRequest $correctionRequest)
     {
+        if ($correctionRequest->status !== 'pending') {
+            return back()->with('error', 'すでに処理済みです');
+        }
+
         $correctionRequest->update([
             'status' => 'rejected',
         ]);

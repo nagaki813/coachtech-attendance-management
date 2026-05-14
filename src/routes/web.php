@@ -8,6 +8,8 @@ use App\Http\Controllers\AttendanceCorrectionRequestController;
 use App\Http\Controllers\Admin\CorrectionRequestController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +21,15 @@ use App\Http\Controllers\Admin\StaffController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'create'])
+        ->name('register');
+    Route::get('/login', [LoginController::class, 'create'])
+        ->name('login');
+    Route::post('/register', [RegisterController::class, 'store']);
+    Route::post('/login', [LoginController::class, 'store']);
+});
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'index'])
@@ -64,6 +75,12 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.correction-requests.approve');
     Route::post('/admin/correction-requests/{correctionRequest}/reject', [CorrectionRequestController::class, 'reject'])
         ->name('admin.correction-requests.reject');
+});
+
+Route::prefix('admin')->middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])
+        ->name('admin.login');
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
 Route::get('/admin/login', [AuthController::class, 'showLoginForm'])

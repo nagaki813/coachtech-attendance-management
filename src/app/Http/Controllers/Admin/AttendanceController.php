@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminAttendanceRequest;
 use App\Models\Attendance;
 
 class AttendanceController extends Controller
@@ -35,8 +37,10 @@ class AttendanceController extends Controller
         return view('admin.attendances.edit', compact('attendance'));
     }
 
-    public function update(Request $request, Attendance $attendance)
+    public function update(AdminAttendanceRequest $request, Attendance $attendance)
     {
+        $data = $request->validated;
+
         $attendance->update([
             'clock_in' => $attendance->work_date . ' ' . $request->clock_in,
             'clock_out' => $attendance->work_date . ' ' . $request->clock_out,

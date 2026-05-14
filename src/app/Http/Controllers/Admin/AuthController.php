@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\AdminLoginRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -24,7 +22,7 @@ class AuthController extends Controller
         return view('admin.auth.login');
     }
 
-    public function login(Request $request)
+    public function login(AdminLoginRequest $request)
     {
         if (auth()->check()) {
             return redirect()->route('admin.attendances.index');
@@ -33,17 +31,20 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
             session(['role' => auth()->user()->role]);
 
             if (auth()->user()->role !== 'admin') {
                 Auth::logout();
-                return back()->withErrors(['email' => '管理者ではありません']);
+                return back()->withErrors(['email' => '管理者ではありません'])
+                    ->withInput();
             }
 
             return redirect()->route('admin.attendances.index');
         }
 
-        return back()->withErrors(['email' => 'ログイン情報が違います']);
+        return back()->withErrors(['email' => 'ログイン情報が違います'])
+            ->withInput();
     }
 }

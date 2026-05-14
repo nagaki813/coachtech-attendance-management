@@ -83,6 +83,17 @@ Route::prefix('admin')->middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
+Route::get('/', function() {
+    if (auth()->check()) {
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.attendances.index');
+        }
+
+        return redirect()->route('attendances.index');
+    }
+
+    return redirect()->route('login');
+});
 Route::get('/admin/login', [AuthController::class, 'showLoginForm'])
     ->name('admin.login');
 Route::post('/admin/login', [AuthController::class, 'login']);

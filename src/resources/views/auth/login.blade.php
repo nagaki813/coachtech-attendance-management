@@ -1,31 +1,45 @@
 @extends('layouts.app')
 
 @section('title,ログイン')
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 @endsection
 
 @section('content')
-    <h1>ログイン</h1>
+    <div class="auth-container">
+        <h1 class="auth-title">ログイン</h1>
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
 
-        <div>
-            <label>メールアドレス</label>
-            <input type="email" name="email" value="{{ old('email') }}">
-        </div>
-        @error("email")
-            <p class="error-message">{{ $message }}</p>
-        @enderror
+            <div class="auth-form-group">
+                <label>メールアドレス</label>
+                <input type="email" name="email" value="{{ old('email') }}">
 
-        <div>
-            <label>パスワード</label>
-            <input type="password" name="password">
-        </div>
-        @error("password")
-            <p class="error-message">{{ $message }}</p>
-        @enderror
+                @error("email")
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <button type="submit">ログインする</button>
-    </form>
+            <div class="auth-form-group">
+                <label>パスワード</label>
+                <input type="password" name="password">
+
+                @error("password")
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <button type="submit" class="auth-button">
+                ログインする
+            </button>
+
+            <div class="auth-link">
+                <a href="{{ route('register') }}">
+                    会員登録はこちら
+                </a>
+            </div>
+        </form>
+    </div>
 @endsection

@@ -1,0 +1,60 @@
+.admin-attendance-container {
+    width: 760px;
+    margin: 60px auto;
+}
+
+.admin-attendance-title {
+    font-size: 24px;
+    font-weight: bold;
+    border-left: 6px solid #000;
+    padding-left: 12px;
+    margin-bottom: 30px;
+}
+
+.date-nav {
+    height: 48px;
+    background: #fff;
+    border-radius: 6px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+
+.date-nav__link {
+    color: #737373;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.date-nav__current {
+    font-weight: bold;
+}
+
+.admin-attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.admin-attendance-table th,
+.admin-attendance-table td {
+    height: 42px;
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
+    color: #555;
+    font-weight: bold;
+}
+
+.admin-attendance-table th {
+    color: #737373;
+}
+
+.detail-link {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}

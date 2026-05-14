@@ -12,12 +12,24 @@ class AttendanceController extends Controller
 {
     public function index(Request $request)
     {
-        $attendances = Attendance::with('user')
-        ->orderBy('work_date', 'desc')
-        ->orderBy('clock_in', 'asc')
-        ->paginate(10);
+        $currentDate = $request->query('date')
+            ? \Carbon\Carbon::parse($request->query('date'))
+            : \Carbon\Carbon::today();
 
-        return view('admin.attendances.index', compact('attendances'));
+        $previousDate = $currentDate->copy()->subDay()->format('Y-m-d');
+        $nextDate = $currentDate->copy()->addDay()->format('Y-m-d');
+
+        $attendances = Attendance::with(['user', 'breaks'])
+        ->whereDate('work_date', $currentDate)
+        ->orderBy('user_id')
+        ->get();
+
+        return view('admin.attendances.index', compact(
+            'attendances',
+            'currentDate',
+            'previousDate',
+            'nextDate'
+        ));
     }
 
     public function show(Attendance $attendance)

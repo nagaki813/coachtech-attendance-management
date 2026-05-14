@@ -1,55 +1,43 @@
 .staff-list-container {
     width: 720px;
-    margin: 70px auto;
+    margin: 80px auto;
 }
 
 .staff-list-title {
-    position: relative;
-    margin-bottom: 45px;
-    padding-left: 16px;
     font-size: 24px;
     font-weight: 700;
-}
-
-.staff-list-title::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 3px;
-    width: 5px;
-    height: 24px;
-    background: #000;
+    border-left: 8px solid #000;
+    padding-left: 16px;
+    margin-bottom: 48px;
 }
 
 .staff-list-table {
     width: 100%;
-    border-collapse: collapse;
     background: #fff;
     border-radius: 4px;
+    border-collapse: collapse;
     overflow: hidden;
 }
 
 .staff-list-table th,
 .staff-list-table td {
-    height: 42px;
-    padding: 0 20px;
-    border-bottom: 1px solid #e5e5e5;
-    font-size: 14px;
+    height: 48px;
+    border-bottom: 1px solid #e0e0e0;
     text-align: center;
-    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 700;
 }
 
 .staff-list-table th {
     color: #737373;
-    font-weight: 700;
 }
 
 .staff-list-table td {
-    color: #555;
-    font-weight: 700;
+    color: #000;
 }
 
 .detail-link {
     color: #000;
     font-weight: 700;
+    text-decoration: none;
 }

@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
 use App\Http\Controllers\AttendanceCorrectionRequestController;
@@ -31,7 +33,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [LoginController::class, 'store']);
 });
 
-Route::middleware(['auth', 'role:user'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'index'])
         ->name('attendances.index');
     Route::get('/attendance/list', [AttendanceController::class, 'list'])
@@ -109,3 +111,19 @@ Route::post('/logout', function () {
 
     return redirect($redirectTo);
 })->name('logout');
+
+Route::middleware('auth')->group(function() {
+    Route::get('/email/verify', function() {
+        return view('auth.verify-email');
+    })->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect()->route('attendances.index');
+    })->middleware('signed')->name('verification.verify');
+
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('message', '認証メールを再送信しました。');
+    })->middleware('throttle:6,1')->name('verification.send');
+});

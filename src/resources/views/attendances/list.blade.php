@@ -37,43 +37,49 @@
             </thead>
 
             <tbody>
-                @forelse ($attendances as $attendance)
+                @foreach ($attendanceDates as $attendanceDate)
                     @php
-                        $breakMinutes = $attendance->breaks->sum(function ($break) {
-                            if (!$break->break_start || !$break->break_end) {
-                                return 0;
-                            }
+                        $date = $attendanceDate['date'];
+                        $attendance = $attendanceDate['attendance'];
 
-                            return \Carbon\Carbon::parse($break->break_start)
-                                ->diffInMinutes(\Carbon\Carbon::parse($break->break_end));
-                        });
-
+                        $breakMinutes = 0;
                         $workMinutes = 0;
 
-                        if ($attendance->clock_in && $attendance->clock_out) {
-                            $workMinutes = \Carbon\Carbon::parse($attendance->clock_in)
-                                ->diffInMinutes(\Carbon\Carbon::parse($attendance->clock_out))
-                                - $breakMinutes;
+                        if ($attendance) {
+                            $breakMinutes = $attendance->breaks->sum(function ($break) {
+                                if (!$break->break_start || !$break->break_end) {
+                                    return 0;
+                                }
+
+                                return \Carbon\Carbon::parse($break->break_start)
+                                    ->diffInMinutes(\Carbon\Carbon::parse($break->break_end));
+                            });
+
+                            if ($attendance->clock_in && $attendance->clock_out) {
+                                $workMinutes = \Carbon\Carbon::parse($attendance->clock_in)
+                                    ->diffInMinutes(\Carbon\Carbon::parse($attendance->clock_out))
+                                    - $breakMinutes;
+                            }
                         }
                     @endphp
 
                     <tr>
-                        <td>{{ \Carbon\Carbon::parse($attendance->work_date)->format('m/d') }}</td>
-                        <td>{{ $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '-' }}</td>
-                        <td>{{ $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '-' }}</td>
-                        <td>{{ sprintf('%d:%02d', floor($breakMinutes / 60), $breakMinutes % 60) }}</td>
-                        <td>{{ sprintf('%d:%02d', floor($workMinutes / 60), $workMinutes % 60) }}</td>
+                        <td>{{ $date->format('m/d') }}</td>
+                        <td>{{ $attendance && $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '' }}</td>
+                        <td>{{  $attendance && $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}</td>
+                        <td>{{ $attendance ? sprintf('%d:%02d', floor($breakMinutes / 60), $breakMinutes % 60) : '' }}</td>
+                        <td>{{ $attendance ? sprintf('%d:%02d', floor($workMinutes / 60), $workMinutes % 60) : '' }}</td>
                         <td>
-                            <a href="{{ route('attendances.show', $attendance->id) }}" class="detail-link">
-                                詳細
-                            </a>
+                            @if ($attendance)
+                                <a href="{{ route('attendances.show', $attendance->id) }}" class="detail-link">
+                                    詳細
+                                </a>
+                            @else
+                                <span class="detail-text">詳細</span>
+                            @endif
                         </td>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="6">勤怠データがありません。</td>
-                    </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
     </div>

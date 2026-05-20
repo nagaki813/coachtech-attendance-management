@@ -78,6 +78,10 @@
     font-weight: 700;
 }
 
+.detail-text {
+    color: #999;
+}
+
 .pagination {
     margin-top: 24px;
 }

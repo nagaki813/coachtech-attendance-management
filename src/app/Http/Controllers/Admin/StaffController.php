@@ -28,16 +28,37 @@ class StaffController extends Controller
         $previousMonth = $currentMonth->copy()->subMonth()->format('Y-m');
         $nextMonth = $currentMonth->copy()->addMonth()->format('Y-m');
 
+        $startOfMonth = $currentMonth->copy()->startOfMonth();
+        $endOfMonth = $currentMonth->copy()->endOfMonth();
+
         $attendances = Attendance::with('breaks')
             ->where('user_id', $user->id)
-            ->whereYear('work_date', $currentMonth->year)
-            ->whereMonth('work_date', $currentMonth->month)
+            ->whereBetween('work_date', [
+                $startOfMonth->format('Y-m-d'),
+                $endOfMonth->format('Y-m-d'),
+            ])
             ->orderBy('work_date', 'asc')
-            ->get();
+            ->get()
+            ->keyBy(function ($attendance) {
+                return Carbon::parse($attendance->work_date)->format('Y-m-d');
+            });
+
+        $attendanceDates = collect();
+
+        for (
+            $date = $startOfMonth->copy();
+            $date->lte($endOfMonth);
+            $date->addDay()
+        ) {
+            $attendanceDates->push([
+                'date' => $date->copy(),
+                'attendance' => $attendances->get($date->format('Y-m-d')),
+            ]);
+        }
 
         return view('admin.staffs.show', compact(
             'user',
-            'attendances',
+            'attendanceDates',
             'currentMonth',
             'previousMonth',
             'nextMonth'

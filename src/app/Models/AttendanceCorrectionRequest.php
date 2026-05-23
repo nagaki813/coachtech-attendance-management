@@ -10,6 +10,8 @@ use App\Models\AttendanceCorrectionRequestBreak;
 
 class AttendanceCorrectionRequest extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'attendance_id',
         'user_id',

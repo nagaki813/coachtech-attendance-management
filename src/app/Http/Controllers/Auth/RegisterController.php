@@ -24,8 +24,10 @@ class RegisterController extends Controller
             'role' => 'user',
         ]);
 
+        $user->sendEmailVerificationNotification();
+
         Auth::login($user);
 
-        return redirect('/attendance');
+        return redirect()->route('verification.notice');
     }
 }

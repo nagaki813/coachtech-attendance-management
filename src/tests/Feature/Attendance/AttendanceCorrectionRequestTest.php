@@ -165,8 +165,10 @@ class AttendanceCorrectionRequestTest extends TestCase
                 'requested_clock_in' => '09:00',
                 'requested_clock_out' => '18:00',
                 'breaks' => [
-                    'break_start' => '19:00',
-                    'break_end' => '19:30',
+                    [
+                        'break_start' => '19:00',
+                        'break_end' => '19:30',
+                    ],
                 ],
                 'note' => '休憩時間修正のため',
             ]

@@ -28,7 +28,7 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    public function test_name_is_required_for_register(): void
+    public function test_email_is_required_for_register(): void
     {
         $response = $this->from('/register')->post('register', [
             'name' => 'テスト太郎',

@@ -59,23 +59,23 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.attendances.index');
     Route::get('/staff/list', [StaffController::class, 'index'])
         ->name('admin.staff.list');
-    Route::get('/admin/correction-requests', [CorrectionRequestController::class, 'index'])
+    Route::get('/correction-requests', [CorrectionRequestController::class, 'index'])
         ->name('admin.correction-requests.index');
-    Route::get('/admin/correction-requests/{correctionRequest}', [CorrectionRequestController::class, 'show'])
+    Route::get('/correction-requests/{correctionRequest}', [CorrectionRequestController::class, 'show'])
         ->name('admin.correction-requests.show');
-    Route::get('/attendance/staff/{user}', [StaffController::class, 'show'])
+    Route::get('/attendances/staff/{user}', [StaffController::class, 'show'])
         ->name('admin.staff.attendances');
-    Route::get('/attendance/staff/{user}/csv', [StaffController::class, 'exportCsv'])
+    Route::get('/attendances/staff/{user}/csv', [StaffController::class, 'exportCsv'])
         ->name('admin.staff.attendances.csv');
-    Route::get('attendances/{attendance}', [AdminAttendanceController::class, 'show'])
+    Route::get('/attendances/{attendance}', [AdminAttendanceController::class, 'show'])
         ->name('admin.attendances.show');
     Route::get('/attendances/{attendance}/edit', [AdminAttendanceController::class, 'edit'])
         ->name('admin.attendances.edit');
     Route::put('/attendances/{attendance}', [AdminAttendanceController::class, 'update'])
         ->name('admin.attendances.update');
-    Route::post('/admin/correction-requests/{correctionRequest}/approve', [CorrectionRequestController::class, 'approve'])
+    Route::post('/correction-requests/{correctionRequest}/approve', [CorrectionRequestController::class, 'approve'])
         ->name('admin.correction-requests.approve');
-    Route::post('/admin/correction-requests/{correctionRequest}/reject', [CorrectionRequestController::class, 'reject'])
+    Route::post('/correction-requests/{correctionRequest}/reject', [CorrectionRequestController::class, 'reject'])
         ->name('admin.correction-requests.reject');
 });
 

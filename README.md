@@ -86,13 +86,6 @@ php artisan db:seed
 php artisan storage:link
 ```
 
-8. フロントエンド環境構築
-
-```bash
-npm install
-npm run dev
-```
-
 ## 使用技術（実行環境）
 
 * PHP 8.1.34

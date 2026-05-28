@@ -18,8 +18,6 @@ git clone git@github.com:nagaki813/coachtech-attendance-management.git
 docker-compose up -d --build
 ```
 
-> Mac M1・M2チップのPCの場合、no matching manifest for linux/arm64/v8 in the manifest list entries のメッセージが表示されてビルドができないことがあります。エラーが発生する場合、docker-compose.yml ファイルの mysql に platform: linux/x86_64 を追加してください。
-
 ```yaml
 mysql:
     image: mysql:8.0.26
@@ -50,9 +48,9 @@ cp .env.example .env
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
-DB_DATABASE=laravel_db
-DB_USERNAME=laravel_user
-DB_PASSWORD=laravel_pass
+DB_DATABASE=attendance_db
+DB_USERNAME=attendance_user
+DB_PASSWORD=attendance_pass
 
 MAIL_MAILER=smtp
 MAIL_HOST=mailhog
@@ -97,10 +95,10 @@ npm run dev
 
 ## 使用技術（実行環境）
 
-* PHP 8.2
-* Laravel 12
-* MySQL 8.0
-* nginx 1.29
+* PHP 8.1.34
+* Laravel 10.50.2
+* MySQL 8.0.26
+* nginx 1.21.1
 * Docker / Docker Compose
 * Mailhog
 

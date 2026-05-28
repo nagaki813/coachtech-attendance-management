@@ -237,6 +237,8 @@ php artisan db:seed
 # テスト
 
 ```bash
+mkdir src/tests/Unit
+
 php artisan test
 ```
 
